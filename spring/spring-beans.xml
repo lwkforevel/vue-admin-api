@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+                http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd">
+       
+	<!-- 配置自动扫描的包 -->
+<!-- 	<context:component-scan base-package="com.zrh">
+	
+	<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+	</context:component-scan> -->
+	
+	<!-- 直接使用注解配置全部的bean，springmvc.xml并没有 -->
+	<context:component-scan
+		base-package="time.no.see">
+	</context:component-scan>
+<mvc:annotation-driven>
+    <mvc:message-converters register-defaults="true">
+        <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+            <property name="objectMapper">
+                <bean class="com.fasterxml.jackson.databind.ObjectMapper">
+                    <property name="serializationInclusion">
+                        <value type="com.fasterxml.jackson.annotation.JsonInclude.Include">NON_NULL</value>
+                    </property>
+                </bean>
+            </property>
+        </bean>
+    </mvc:message-converters>
+</mvc:annotation-driven>
+		<context:property-placeholder
+		location="classpath:dbconfig.properties" />
+	<!-- Spring的配置文件，主要配置和业务逻辑有关的 -->
+	<bean class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		id="comboPooledDataSource">
+		<property name="jdbcUrl" value="${jdbc.jdbcUrl}"></property>
+		<property name="driverClass" value="${jdbc.driverClass}"></property>
+		<property name="user" value="${jdbc.user}"></property>
+		<property name="password" value="${jdbc.password}"></property>
+	</bean>
+	<bean class="org.mybatis.spring.SqlSessionFactoryBean"
+		id="sqlSessionFactoryBean">
+		<!-- 指定mybatis全局配置文件的位置 -->
+		<property name="configLocation"
+			value="classpath:mybatis.cfg.xml"></property>
+		<property name="dataSource" ref="comboPooledDataSource"></property>
+		<property name="mapperLocations"
+			value="classpath:time/no/see/mapper/*.xml"></property>
+	</bean>
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="time.no.see.mapper"></property>
+	</bean>
+	<bean class="org.mybatis.spring.SqlSessionTemplate"
+		id="sqlSession">
+		<constructor-arg name="sqlSessionFactory"
+			ref="sqlSessionFactoryBean" />
+		<constructor-arg name="executorType" value="BATCH" />
+	</bean>
+	<bean
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+		id="dataSourceTransactionManager">
+		<property name="dataSource" ref="comboPooledDataSource"></property>
+	</bean>
+	<!-- <aop:config>
+		<aop:pointcut
+			expression="execution(* com.gwolf.service..*(..))" id="txPoint" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="txPoint" />
+	</aop:config>
+	配置事务如何切入
+	<tx:advice id="txAdvice"
+		transaction-manager="dataSourceTransactionManager">
+		<tx:attributes>
+			所有方法都是事务方法
+			<tx:method name="*" />
+			<tx:method name="get*" read-only="true" />
+		</tx:attributes>
+	</tx:advice> -->
+	 <import resource="classpath:spring-shiro-web.xml"/>
+</beans>

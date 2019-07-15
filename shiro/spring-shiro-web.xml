@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<bean id="sessionIdCookie"
+		class="org.apache.shiro.web.servlet.SimpleCookie">
+		<constructor-arg value="sid" />
+		<property name="httpOnly" value="true" />
+		<property name="maxAge" value="180000" />
+	</bean>
+
+	<!-- 会话管理器 -->
+	<bean id="sessionManager"
+		class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+		<property name="globalSessionTimeout" value="1800000" />
+		<property name="deleteInvalidSessions" value="true" />
+		<property name="sessionValidationSchedulerEnabled"
+			value="true" />
+		<!-- <property name="sessionValidationScheduler" ref="sessionValidationScheduler" 
+			/> <property name="sessionDAO" ref="sessionDAO" /> <property name="sessionIdCookieEnabled" 
+			value="true" /> <property name="sessionIdCookie" ref="sessionIdCookie" /> -->
+	</bean>
+	<!-- 安全管理器 -->
+	<bean id="securityManager"
+		class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<property name="realms">
+			<list>
+				<ref bean="loginRealm" />
+			</list>
+		</property>
+	</bean>
+	<bean id="loginRealm"
+		class="are.you.ok.shiro.realm.login.LoginRealm">
+		<!-- 配置密码匹配器 -->
+		<property name="credentialsMatcher">
+			<bean class="are.you.ok.shiro.matcher.HashRequestMatcher
+">
+				<!-- 加密算法为MD5 -->
+				<property name="hashAlgorithmName" value="MD5"></property>
+				<!-- 加密次数 -->
+				<property name="hashIterations" value="2"></property>
+			</bean>
+		</property>
+	</bean>
+
+	<!-- Shiro的Web过滤器 -->
+	<bean id="shiroFilter"
+		class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<property name="securityManager" ref="securityManager" />
+		<property name="filters">
+			<util:map>
+			</util:map>
+		</property>
+		<property name="filterChainDefinitions">
+			<value>
+			</value>
+		</property>
+	</bean>
+
+</beans>
