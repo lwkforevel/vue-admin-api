@@ -2,6 +2,7 @@ package are.you.ok.model.result;
 
 public class TToken {
 	
+	
 	private String privilege;
 	
 	private String token;

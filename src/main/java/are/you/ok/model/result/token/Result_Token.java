@@ -6,7 +6,7 @@ import are.you.ok.model.result.TToken;
 public class Result_Token extends BaseResult<TToken>{
 	
 	private TToken token;
-
+	
 	public TToken getToken() {
 		return token;
 	}

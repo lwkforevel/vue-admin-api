@@ -50,4 +50,6 @@ public interface Sys_RoleMapper {
      * @mbggenerated Sat Jul 13 14:51:05 CST 2019
      */
     int updateByPrimaryKey(Sys_Role record);
+
+	Sys_Role findSysRoleById(Long id);
 }

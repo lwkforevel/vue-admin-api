@@ -1,13 +1,12 @@
-package time.no.see.test;
+package are.you.ok.utils.resource;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import org.junit.Test;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -15,45 +14,39 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import are.you.ok.model.ResourceAndPermission;
 import are.you.ok.model.resources.ResourceTree;
 
-public class MenuTest {
+public class Resource_HasPermissionUtil {
 	
-	@Test
-	public void perseJSON() throws JsonParseException, JsonMappingException, IOException, ClassNotFoundException {
-		String data = "[{\"id\":11,\"name\":\"organization\",\"permission\":[\"update\"]},{\"id\":21,\"name\":\"user\",\"permission\":[\"view\"]},{\"id\":31,\"name\":\"resource\",\"permission\":[\"update\"]},{\"id\":41,\"name\":\"role\",\"permission\":[\"create\",\"delete\"]}]";
+	
+	public List<ResourceAndPermission> extraPermissions(String permissions) throws JsonParseException, JsonMappingException, IOException, ClassNotFoundException {
 		ObjectMapper objectMapper = new ObjectMapper();
-		List<ResourceTree> resourceTrees = objectMapper.readValue(data, new TypeReference<List<ResourceTree>>() {});
-		for (ResourceTree resourceTree : resourceTrees) {
-			/*
-			 * 查詢出來滿足條件的菜單數據 //如果全部菜單權限都沒有直接pass
-			 */
-
-			List<String> permissions = resourceTree.getPermission();
-			List<String> user_permissions = parsePermission(permissions, resourceTree);
-
-			System.out.println(user_permissions);
-
-			// 最终判断
-
-			// 最后保存符合条sts_Resource
-
-			//
-			// 調用hasPermission方法
-		}
-
+		List<ResourceTree> resourceTrees = objectMapper.readValue(permissions, new TypeReference<List<ResourceTree>>() {});
+		List<ResourceAndPermission> resourceAndPermissions = resourceTrees.stream().map(
+				resource ->{
+					List<String> permission = resource.getPermission();
+					String name = resource.getName();
+					Set<String> combinePermission = combinePermission(permission, name);
+					ResourceAndPermission resourceAndPermission = new ResourceAndPermission();
+					resourceAndPermission.setId(resource.getId());
+					resourceAndPermission.setPermission(combinePermission);
+					return resourceAndPermission;
+							}
+								).collect(Collectors.toList());
+		return resourceAndPermissions;
 	}
 	
 	
 	
 	
-	private List<String> parsePermission(List<String> permissions,ResourceTree resourceTree) {
+	private Set<String> combinePermission(List<String> permissions,String name) {
 		Stream<String> stream = permissions.stream();
-		List<String> user_permissions = stream.map(new strFunction(resourceTree)).collect(Collectors.toList());		
+		Set<String> user_permissions = stream.map(new strFunction(name)).collect(Collectors.toSet());		
 		return user_permissions;
 	}
 	
-	@Test
+	
 	public void convertJSON() throws JsonProcessingException {
 		List<ResourceTree> finalT = new ArrayList<ResourceTree>();
 		
@@ -99,16 +92,16 @@ public class MenuTest {
 
 class strFunction implements Function<String, String>{
 	
-	private ResourceTree resourceTree;
+	private String name;
+	
 	@Override
-	public String apply(String t) {
-		String name = resourceTree.getName();
-		String finalName = name + ":" + t;
+	public String apply(String permission) {
+		String finalName = name + ":" + permission;
 		return finalName;
 	}
-	public strFunction(ResourceTree resourceTree) {
+	public strFunction(String name) {
 		super();
-		this.resourceTree = resourceTree;
+		this.name = name;
 	}
 	
 }

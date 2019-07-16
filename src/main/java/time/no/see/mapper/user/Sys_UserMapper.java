@@ -52,7 +52,6 @@ public interface Sys_UserMapper {
      */
     int updateByPrimaryKey(Sys_User record);
 
-	Sys_User getSys_Username(String username);
 
 	Sys_User getSys_UserByUsername(String username);
 }
