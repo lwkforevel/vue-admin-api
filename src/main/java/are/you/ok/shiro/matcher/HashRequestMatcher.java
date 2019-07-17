@@ -3,14 +3,11 @@ package are.you.ok.shiro.matcher;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SaltedAuthenticationInfo;
-import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.crypto.hash.DefaultHashService;
-import org.apache.shiro.crypto.hash.Hash;
 import org.apache.shiro.crypto.hash.HashRequest;
-import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
-import org.apache.shiro.util.SimpleByteSource;
 
 public class HashRequestMatcher implements CredentialsMatcher{
 	
@@ -21,22 +18,20 @@ public class HashRequestMatcher implements CredentialsMatcher{
 	
 	private Integer hashIterations;
 	
-	
-	
-	
-	
 	private String getTokenCredential(AuthenticationToken token,AuthenticationInfo info) {
-		Object credentials = token.getCredentials();
-		Object principal = token.getPrincipal();
+		char[] password= null;
+		if(token instanceof UsernamePasswordToken) {
+			 password = ((UsernamePasswordToken) token).getPassword();
+		}
 		Object salt = null;
 		if(info instanceof SaltedAuthenticationInfo) {
 			salt = ((SaltedAuthenticationInfo) info).getCredentialsSalt();
 		}
 		DefaultHashService defaultHashService = new DefaultHashService();
-		defaultHashService.setPrivateSalt(ByteSource.Util.bytes(principal));
+		defaultHashService.setPrivateSalt(ByteSource.Util.bytes(token.getPrincipal()));
 		defaultHashService.setHashAlgorithmName(getHashAlgorithmName());
 		HashRequest request = new HashRequest.Builder()
-	             .setSource(ByteSource.Util.bytes(credentials))
+	             .setSource(ByteSource.Util.bytes(new String(password)))
 	             .setSalt(salt).setIterations(getHashIterations()).build();
 		String hex = defaultHashService.computeHash(request).toHex();
 		return hex;

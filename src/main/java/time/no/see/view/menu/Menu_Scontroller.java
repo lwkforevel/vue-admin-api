@@ -29,7 +29,6 @@ public class Menu_Scontroller {
 		permissions = URLDecoder.decode(permissions,"UTF-8");
 		System.out.println(permissions);
 		permissions = permissions.substring(1,permissions.length()-1).replace("\\\"", "\"");
-		System.out.println(permissions);
 		List<Menu_S> resourceHasPermission = sys_ResourceService.resourceHasPermission(permissions);
 		BaseResult<List<Menu_S>> results = new BaseResult<List<Menu_S>>();
 		results.setCode(20000);

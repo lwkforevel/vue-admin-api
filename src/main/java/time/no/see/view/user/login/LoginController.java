@@ -40,13 +40,13 @@ public class LoginController {
         try {
             UsernamePasswordToken token = new UsernamePasswordToken(user.getUsername(), user.getPassword());
             subject.login(token);
-           Sys_Role role = sys_RoleService.findSys_RoleByUsername(user.getUsername());
-           tToken.setPrivilege(role.getPermission());
         } catch (UnknownAccountException e) {
         	result_Token.setCode(0000000);
         } catch (IncorrectCredentialsException e) {
         	result_Token.setCode(000000);
         }
+        Sys_Role role = sys_RoleService.findSys_RoleByUsername(user.getUsername());
+        tToken.setPrivilege(role.getPermission());
         //‘O÷√TOKEN
         tToken.setToken(user.getUsername());
         result_Token.setToken(tToken);

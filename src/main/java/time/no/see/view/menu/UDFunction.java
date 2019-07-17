@@ -19,6 +19,7 @@ public class UDFunction implements Function<Sys_Resource, Menu_S>{
 		menu_S.setPath(sys_resource.getPath());
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("title", sys_resource.getName());
+		map.put("icon", sys_resource.getIcon());
 		menu_S.setMeta(map);
 		List<Sys_Resource> children = sys_resource.getChildren();
 		if(children!=null) {

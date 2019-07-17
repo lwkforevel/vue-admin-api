@@ -84,14 +84,25 @@ public class Sys_Resource {
      */
     private Boolean available;
     
+    private String icon;
+    
     private List<Sys_Resource> children;
     
     
-    @Override
+    
+    public String getIcon() {
+		return icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
+
+	@Override
 	public String toString() {
 		return "Sys_Resource [id=" + id + ", name=" + name + ", type=" + type + ", url=" + url + ", parentId="
 				+ parentId + ", parentIds=" + parentIds + ", permission=" + permission + ", checked=" + checked
-				+ ", path=" + path + ", available=" + available + "]";
+				+ ", path=" + path + ", available=" + available + ", icon=" + icon + ", children=" + children + "]";
 	}
 
 	public List<Sys_Resource> getChildren() {

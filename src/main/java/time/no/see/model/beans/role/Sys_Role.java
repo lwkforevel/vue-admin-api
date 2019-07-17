@@ -192,4 +192,12 @@ public class Sys_Role {
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
     }
+
+	@Override
+	public String toString() {
+		return "Sys_Role [id=" + id + ", permission=" + permission + ", available=" + available + ", introduction="
+				+ introduction + ", avatar=" + avatar + ", name=" + name + "]";
+	}
+    
+    
 }
