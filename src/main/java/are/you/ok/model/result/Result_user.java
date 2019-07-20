@@ -1,12 +1,21 @@
 package are.you.ok.model.result;
 
+import java.util.List;
+
 import time.no.see.model.beans.User;
 
 public class Result_user {
 	
 	private Integer code;
 	private User data;
+	private List<String> permission;
 	
+	public List<String> getPermission() {
+		return permission;
+	}
+	public void setPermission(List<String> permission) {
+		this.permission = permission;
+	}
 	public Integer getCode() {
 		return code;
 	}
@@ -21,6 +30,6 @@ public class Result_user {
 	}
 	@Override
 	public String toString() {
-		return "Result_userinfo [code=" + code + ", data=" + data + "]";
+		return "Result_user [code=" + code + ", data=" + data + ", permission=" + permission + "]";
 	}
 }

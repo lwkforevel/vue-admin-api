@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import are.you.ok.entry.EncryHelper;
 import time.no.see.mapper.user.Sys_UserMapper;
+import time.no.see.model.beans.role.Sys_Role;
 import time.no.see.model.beans.user.Sys_User;
 import time.no.see.service.user.login.UserLoginService;
 
@@ -24,6 +25,13 @@ public class UserLoginServiceImpl implements UserLoginService{
 		String encryptPassword = encryHelper.encryptPassword(user.getPassword(), dbUser.getSalt());
 		user.setPassword(encryptPassword);
 		return (user.getPassword().equals(encryptPassword))? user:null;
+	}
+
+
+	@Override
+	public Sys_Role findPermission(String username) {
+		
+		return null;
 	}
 
 }

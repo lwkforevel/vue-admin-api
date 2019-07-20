@@ -2,11 +2,9 @@ package are.you.ok.model.result;
 
 public class BaseResult<T> {
 	
-	private Integer code;
+	private Integer code = 20000;
 	
 	private T data;
-	
-	
 	
 	public T getData() {
 		return data;

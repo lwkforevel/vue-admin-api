@@ -21,7 +21,6 @@ public class Resource_HasPermissionUtil {
 	
 	
 	public List<ResourceAndPermission> extraPermissions(String permissions) throws JsonParseException, JsonMappingException, IOException, ClassNotFoundException {
-		System.out.println(permissions);
 		ObjectMapper objectMapper = new ObjectMapper();
 		List<ResourceTree> resourceTrees = objectMapper.readValue(permissions, new TypeReference<List<ResourceTree>>() {});
 		List<ResourceAndPermission> resourceAndPermissions = resourceTrees.stream().map(
