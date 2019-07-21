@@ -1,6 +1,5 @@
 package time.no.see.mapper.user;
 
-import time.no.see.model.beans.User;
 import time.no.see.model.beans.user.Sys_User;
 
 public interface Sys_UserMapper {
@@ -54,4 +53,10 @@ public interface Sys_UserMapper {
 
 
 	Sys_User getSys_UserByUsername(String username);
+
+	Long selectRoleIdByUsername(String username);
+
+	Sys_User selectRoleByUsername(String username);
+
+
 }

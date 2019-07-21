@@ -19,18 +19,18 @@ public class LoginController {
 	@ResponseBody
 	@RequestMapping("/user/login")
 	public BaseResult<Token> userLogin(String username,String password) {
-		System.out.println(username +"=============="+password);
 	    BaseResult<Token> base_token = userLogin_(username,password);
 	    return base_token;
 	}
-	
+	 
 	
 	private  BaseResult<Token> userLogin_(String username,String password) {
 		UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(username,password);
 		Subject subject = SecurityUtils.getSubject();
-		BaseResult<Token> base_token = new BaseResult<Token>();
+		BaseResult<Token> base_token = new BaseResult<Token>(new Token());
 		subject.login(usernamePasswordToken);
 		//如果没有异常则证明密码验证成功,返回用户名--token
+		
 		base_token.getData().setUsername(username);
 		return base_token;
 	}

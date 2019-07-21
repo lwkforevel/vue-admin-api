@@ -32,7 +32,7 @@ import time.no.see.view.menu.UDFunction;
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(locations = { "classpath:mybatis.cfg.xml",
-        "classpath:spring-beans.xml"})
+        						    "classpath:spring-beans.xml"})
 @Service
 public class Sys_ResourceServiceImpl implements Sys_ResourceService{
 

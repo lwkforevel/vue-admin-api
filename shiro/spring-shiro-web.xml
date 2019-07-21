@@ -7,7 +7,7 @@
        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
-
+	
 	<bean id="sessionIdCookie"
 		class="org.apache.shiro.web.servlet.SimpleCookie">
 		<constructor-arg value="sid" />
@@ -35,20 +35,6 @@
 			</list>
 		</property>
 	</bean>
-	<bean id="loginRealm"
-		class="are.you.ok.shiro.realm.login.LoginRealm">
-		<!-- 配置密码匹配器 -->
-		<property name="credentialsMatcher">
-			<bean class="are.you.ok.shiro.matcher.HashRequestMatcher
-">
-				<!-- 加密算法为MD5 -->
-				<property name="hashAlgorithmName" value="MD5"></property>
-				<!-- 加密次数 -->
-				<property name="hashIterations" value="2"></property>
-			</bean>
-		</property>
-	</bean>
-
 	<!-- Shiro的Web过滤器 -->
 	<bean id="shiroFilter"
 		class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
@@ -62,5 +48,6 @@
 			</value>
 		</property>
 	</bean>
-
+	
+	 <import resource="classpath:spring-shiro-login.xml"/>
 </beans>

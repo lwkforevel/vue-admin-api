@@ -31,7 +31,8 @@ public class LoginRealm extends AuthenticatingRealm{
 		UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken) token;
 		String username = usernamePasswordToken.getUsername();
 		char[] password = usernamePasswordToken.getPassword();
-		Sys_User sys_user = sys_UserMapper.getSys_UserByUsername(username);
+		Sys_User sys_user = sys_UserMapper.selectRoleByUsername(username);
+		System.out.println("*****************"+sys_user);
 		SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(password,sys_user.getPassword(),ByteSource.Util.bytes(sys_user.getSalt()),getName());
 		return simpleAuthenticationInfo;
 	}

@@ -6,7 +6,7 @@ public class BaseResult<T> {
 	
 	private T data;
 	
-	public T getData() {
+	public T getData(){
 		return data;
 	}
 
@@ -14,7 +14,7 @@ public class BaseResult<T> {
 		this.data = data;
 	}
 
-	public Integer getCode() {
+	public Integer getCode() throws InstantiationException, IllegalAccessException {
 		return code;
 	}
 
@@ -26,6 +26,21 @@ public class BaseResult<T> {
 	public String toString() {
 		return "BaseResult [code=" + code + ", data=" + data + "]";
 	}
-	
+
+	public BaseResult(Integer code, T data) {
+		super();
+		this.code = code;
+		this.data = data;
+	}
+
+	public BaseResult(T data) {
+		super();
+		this.data = data;
+	}
+
+	public BaseResult() {
+		super();
+	}
+
 	
 }
